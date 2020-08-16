@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+
+  covey-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ['/usr/src/app/entrypoint.sh']
+    volumes:
+      - '.:/user/src/app'
+    ports:
+      - 5001:5000
+    environment: 
+      - FLASK_ENV=development
+      - APP_SETTINGS=covey.config.DevelopmentConfig
+      - DATABASE_URL=postgresql://postgres:postgres@covey-db:5432/covey_dev
+      - DATABASE_TEST_URL=postgresql://postgres:postgres@covey-db:5432/covey_test
+    depends_on: 
+      - covey-db
+
+  covey-db:
+    build:
+      context: ./covey/db
+      dockerfile: Dockerfile
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

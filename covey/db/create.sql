@@ -1,0 +1,2 @@
+CREATE DATABASE covey_dev;
+CREATE DATABASE covey_test;
